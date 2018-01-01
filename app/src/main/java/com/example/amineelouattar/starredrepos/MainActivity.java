@@ -16,6 +16,8 @@ import com.example.amineelouattar.starredrepos.Utils.GlobalVars;
 import com.example.amineelouattar.starredrepos.Utils.ReposAdapter;
 import com.example.amineelouattar.starredrepos.Utils.Volleysingleton;
 import com.example.amineelouattar.starredrepos.models.Repos;
+import com.paginate.Paginate;
+import com.paginate.recycler.LoadingListItemSpanLookup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,12 +30,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Paginate.Callbacks{
 
     private RecyclerView repos_list;
     private List<Repos> repos;
-    private int pager = 1;
+    private int pager = 0;
     private ReposAdapter adapter;
+    private boolean isLoading = false;
+    private Paginate paginate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +57,13 @@ public class MainActivity extends AppCompatActivity {
         repos_list.addItemDecoration(dividerItemDecoration);
         //Set the Repos Adapter for the list
         repos_list.setAdapter(adapter);
-        //Get data from the Api and notify that data set changed
-        apiRequest();
 
+        //create the Paginate Builder
+        paginate = Paginate.with(repos_list, this)
+                .setLoadingTriggerThreshold(3)
+                .addLoadingListItem(true)
+                .setLoadingListItemCreator(null)
+                .build();
 
     }
 
@@ -90,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             adapter.notifyDataSetChanged();
+                            isLoading = false;
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
@@ -97,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                isLoading = false;
             }
         });
 
@@ -116,5 +126,26 @@ public class MainActivity extends AppCompatActivity {
         Log.d("CURRENT_DATE", url);
         return url;
 
+    }
+
+    @Override
+    public void onLoadMore() {
+
+        isLoading = true;
+        if(pager < GlobalVars.PAGE_LIMIT){
+            //if the user didn't yet arrived to the bottom, increment the pager to get the next dataSet
+            pager++;
+            apiRequest();
+        }
+    }
+
+    @Override
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    @Override
+    public boolean hasLoadedAllItems() {
+        return (pager < GlobalVars.PAGE_LIMIT) ? false : true;
     }
 }
