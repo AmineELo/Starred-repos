@@ -47,7 +47,7 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
         holder.username.setText(repo.getUsername());
         holder.rating.setText(repo.getRating());
 
-        Picasso.with(context).load(repo.getAvatar_url()).into(holder.avatar);
+        Picasso.with(context).load(repo.getAvatarUrl()).into(holder.avatar);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.example.amineelouattar.starredrepos;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +13,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.amineelouattar.starredrepos.Utils.GlobalVars;
 import com.example.amineelouattar.starredrepos.Utils.ReposAdapter;
-import com.example.amineelouattar.starredrepos.Utils.Volleysingleton;
+import com.example.amineelouattar.starredrepos.Utils.VolleySingleton;
 import com.example.amineelouattar.starredrepos.models.Repos;
 import com.paginate.Paginate;
-import com.paginate.recycler.LoadingListItemSpanLookup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +30,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Paginate.Callbacks{
 
-    private RecyclerView repos_list;
-    private List<Repos> repos;
+    private RecyclerView reposList;
+    private List<Repos> reposDataSet;
     private int pager = 0;
     private ReposAdapter adapter;
     private boolean isLoading = false;
@@ -45,21 +43,21 @@ public class MainActivity extends AppCompatActivity implements Paginate.Callback
         setContentView(R.layout.activity_main);
 
         //Initialize components
-        repos_list = (RecyclerView) findViewById(R.id.repos_list);
-        repos = new ArrayList<>();
-        adapter = new ReposAdapter(repos, this);
+        reposList = (RecyclerView) findViewById(R.id.repos_list);
+        reposDataSet = new ArrayList<>();
+        adapter = new ReposAdapter(reposDataSet, this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(repos_list.getContext(), mLayoutManager.getOrientation());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(reposList.getContext(), mLayoutManager.getOrientation());
 
-        repos_list.setLayoutManager(mLayoutManager);
+        reposList.setLayoutManager(mLayoutManager);
 
         //Set the divider for the list
-        repos_list.addItemDecoration(dividerItemDecoration);
+        reposList.addItemDecoration(dividerItemDecoration);
         //Set the Repos Adapter for the list
-        repos_list.setAdapter(adapter);
+        reposList.setAdapter(adapter);
 
         //create the Paginate Builder
-        paginate = Paginate.with(repos_list, this)
+        paginate = Paginate.with(reposList, this)
                 .setLoadingTriggerThreshold(3)
                 .addLoadingListItem(true)
                 .setLoadingListItemCreator(null)
@@ -71,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements Paginate.Callback
 
         String url = setUpUrl();
 
-        //setup a string request to get repos list from the crafted url
+        //setup a string request to get reposDataSet list from the crafted url
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url + pager,
                 new Response.Listener<String>() {
                     @Override
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements Paginate.Callback
 
                             // iterate through each item and needed field the dataSet
                             for(int i = 0; i < items.length(); i++){
-                                repos.add(new Repos(
+                                reposDataSet.add(new Repos(
                                         items.getJSONObject(i).getString("name"),
                                         items.getJSONObject(i).getJSONObject("owner").getString("avatar_url"),
                                         items.getJSONObject(i).getJSONObject("owner").getString("login"),
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements Paginate.Callback
         });
 
         //Add request to Volley queue;
-        Volleysingleton.getInstance(this).addToRequestQueue(stringRequest);
+        VolleySingleton.getInstance(this).addToRequestQueue(stringRequest);
     }
 
     private String setUpUrl(){

@@ -10,13 +10,13 @@ import com.android.volley.toolbox.Volley;
  * Created by amineelouattar on 12/30/17.
  */
 
-public class Volleysingleton {
+public class VolleySingleton {
 
-    private static Volleysingleton volleyInstance;
+    private static VolleySingleton volleyInstance;
     private RequestQueue queue;
     private Context context;
 
-    private Volleysingleton(Context context){
+    private VolleySingleton(Context context){
         this.context = context;
         queue = getQueue();
     }
@@ -27,8 +27,8 @@ public class Volleysingleton {
         return queue;
     }
 
-    public static synchronized Volleysingleton getInstance(Context context){
-        if (volleyInstance == null ) volleyInstance = new Volleysingleton(context);
+    public static synchronized VolleySingleton getInstance(Context context){
+        if (volleyInstance == null ) volleyInstance = new VolleySingleton(context);
         return volleyInstance;
     }
 

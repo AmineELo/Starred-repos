@@ -6,11 +6,11 @@ package com.example.amineelouattar.starredrepos.models;
 
 public class Repos {
 
-    private String title, avatar_url, username, description, rating;
+    private String title, avatarUrl, username, description, rating;
 
-    public Repos(String title, String avatar_url, String username, String description, String rating) {
+    public Repos(String title, String avatarUrl, String username, String description, String rating) {
         this.title = title;
-        this.avatar_url = avatar_url;
+        this.avatarUrl = avatarUrl;
         this.username = username;
         this.description = description;
         this.rating = rating;
@@ -20,8 +20,8 @@ public class Repos {
         return title;
     }
 
-    public String getAvatar_url() {
-        return avatar_url;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
     public String getUsername() {
