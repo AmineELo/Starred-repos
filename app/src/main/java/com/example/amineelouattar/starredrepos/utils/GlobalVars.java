@@ -1,4 +1,4 @@
-package com.example.amineelouattar.starredrepos.Utils;
+package com.example.amineelouattar.starredrepos.utils;
 
 /**
  * Created by amineelouattar on 12/30/17.

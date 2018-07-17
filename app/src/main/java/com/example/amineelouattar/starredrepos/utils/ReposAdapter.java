@@ -1,6 +1,7 @@
-package com.example.amineelouattar.starredrepos.Utils;
+package com.example.amineelouattar.starredrepos.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
         this.context = context;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -51,6 +53,11 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
         Picasso.get().load(repo.getAvatarUrl()).into(holder.avatar);
     }
 
+    public void addRepos(List<Repos> reposList){
+        this.repos.addAll(reposList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return repos.size();
@@ -61,7 +68,7 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
         public TextView  title, description, username, rating;
         public ImageView avatar;
 
-        public ViewHolder(View view){
+        ViewHolder(View view){
             super(view);
 
             title = (TextView) view.findViewById(R.id.title);
