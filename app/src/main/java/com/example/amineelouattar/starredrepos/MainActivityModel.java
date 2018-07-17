@@ -19,5 +19,6 @@ public class MainActivityModel implements MainModelInterface {
         return new StringRequest(Request.Method.GET, url + pager,
                 responseListener,
                 errorListener);
+
     }
 }

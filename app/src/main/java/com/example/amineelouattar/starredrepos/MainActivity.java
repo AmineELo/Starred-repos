@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.amineelouattar.starredrepos.interfaces.MainViewInterface;
 import com.example.amineelouattar.starredrepos.utils.GlobalVars;
 import com.example.amineelouattar.starredrepos.utils.ReposAdapter;
 import com.example.amineelouattar.starredrepos.utils.VolleySingleton;
@@ -28,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Paginate.Callbacks{
+public class MainActivity extends AppCompatActivity implements Paginate.Callbacks, MainViewInterface{
 
     private RecyclerView reposList;
     private List<Repos> reposDataSet;
@@ -144,5 +145,10 @@ public class MainActivity extends AppCompatActivity implements Paginate.Callback
     @Override
     public boolean hasLoadedAllItems() {
         return (pager < GlobalVars.PAGE_LIMIT) ? false : true;
+    }
+
+    @Override
+    public void updateRepos(List<Repos> reposList) {
+
     }
 }
