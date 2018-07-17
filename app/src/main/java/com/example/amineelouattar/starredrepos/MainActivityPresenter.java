@@ -1,5 +1,6 @@
 package com.example.amineelouattar.starredrepos;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -8,6 +9,7 @@ import com.example.amineelouattar.starredrepos.interfaces.MainPresenterInterface
 import com.example.amineelouattar.starredrepos.interfaces.MainViewInterface;
 import com.example.amineelouattar.starredrepos.models.Repos;
 import com.example.amineelouattar.starredrepos.utils.GlobalVars;
+import com.paginate.Paginate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,14 +22,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivityPresenter implements MainPresenterInterface{
+public class MainActivityPresenter implements MainPresenterInterface, Paginate.Callbacks{
 
     MainViewInterface view;
     private MainActivityModel mainModel;
+    private int pager;
+    private boolean isLoading;
+    private Context context;
 
 
-    public MainActivityPresenter(MainActivityModel mainModel) {
+    public MainActivityPresenter(MainActivityModel mainModel, Context context) {
         this.mainModel = mainModel;
+        this.pager = 0;
+        this.isLoading = false;
+        this.context = context;
     }
 
     public void bind(MainViewInterface view){
@@ -39,9 +47,9 @@ public class MainActivityPresenter implements MainPresenterInterface{
     }
 
     @Override
-    public void getRepos(int pager) {
+    public void getRepos() {
 
-        mainModel.performRequest(setUpUrl(), pager, new Response.Listener<String>() {
+        mainModel.performRequest(setUpUrl(), pager, context, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if(view != null){
@@ -93,5 +101,25 @@ public class MainActivityPresenter implements MainPresenterInterface{
         }
 
         return reposList;
+    }
+
+    @Override
+    public void onLoadMore() {
+        isLoading = true;
+        if(pager < GlobalVars.PAGE_LIMIT){
+            //if the user didn't yet arrived to the bottom, increment the pager to get the next dataSet
+            pager++;
+            getRepos();
+        }
+    }
+
+    @Override
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    @Override
+    public boolean hasLoadedAllItems() {
+        return pager >= GlobalVars.PAGE_LIMIT;
     }
 }
