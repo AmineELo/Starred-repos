@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.amineelouattar.starredrepos.interfaces.MainModelInterface;
 import com.example.amineelouattar.starredrepos.interfaces.MainViewInterface;
 import com.example.amineelouattar.starredrepos.utils.GlobalVars;
 import com.example.amineelouattar.starredrepos.utils.ReposAdapter;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     private ReposAdapter adapter;
     private boolean isLoading = false;
     private Paginate paginate;
+    private MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +48,8 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         initComponents();
         configureReposList();
 
-
         //create the Paginate Builder
-        paginate = Paginate.with(reposList, this)
+        paginate = Paginate.with(reposList, presenter)
                 .setLoadingTriggerThreshold(3)
                 .addLoadingListItem(true)
                 .setLoadingListItemCreator(null)
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         reposDataSet = new ArrayList<>();
         reposList = findViewById(R.id.repos_list);
         adapter = new ReposAdapter(reposDataSet, this);
+        MainModelInterface mainModel = new MainActivityModel();
+        presenter = new MainActivityPresenter(mainModel, this);
     }
 
     private void configureReposList(){

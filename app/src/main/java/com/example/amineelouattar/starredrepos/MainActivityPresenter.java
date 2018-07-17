@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.amineelouattar.starredrepos.interfaces.MainModelInterface;
 import com.example.amineelouattar.starredrepos.interfaces.MainPresenterInterface;
 import com.example.amineelouattar.starredrepos.interfaces.MainViewInterface;
 import com.example.amineelouattar.starredrepos.models.Repos;
@@ -25,13 +26,13 @@ import java.util.List;
 public class MainActivityPresenter implements MainPresenterInterface, Paginate.Callbacks{
 
     MainViewInterface view;
-    private MainActivityModel mainModel;
+    private MainModelInterface mainModel;
     private int pager;
     private boolean isLoading;
     private Context context;
 
 
-    public MainActivityPresenter(MainActivityModel mainModel, Context context) {
+    public MainActivityPresenter(MainModelInterface mainModel, Context context) {
         this.mainModel = mainModel;
         this.pager = 0;
         this.isLoading = false;
