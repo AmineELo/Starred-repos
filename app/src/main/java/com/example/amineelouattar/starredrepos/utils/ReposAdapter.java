@@ -51,6 +51,11 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.ViewHolder> 
         Picasso.get().load(repo.getAvatarUrl()).into(holder.avatar);
     }
 
+    public void addRepos(List<Repos> reposList){
+        this.repos.addAll(reposList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         return repos.size();

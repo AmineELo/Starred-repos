@@ -79,6 +79,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
     @Override
     public void updateRepos(List<Repos> reposList) {
-
+        adapter.addRepos(reposList);
     }
 }
