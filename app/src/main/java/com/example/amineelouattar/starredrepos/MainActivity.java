@@ -11,9 +11,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.amineelouattar.starredrepos.Utils.GlobalVars;
-import com.example.amineelouattar.starredrepos.Utils.ReposAdapter;
-import com.example.amineelouattar.starredrepos.Utils.VolleySingleton;
+import com.example.amineelouattar.starredrepos.utils.GlobalVars;
+import com.example.amineelouattar.starredrepos.utils.ReposAdapter;
+import com.example.amineelouattar.starredrepos.utils.VolleySingleton;
 import com.example.amineelouattar.starredrepos.models.Repos;
 import com.paginate.Paginate;
 
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements Paginate.Callback
                                         items.getJSONObject(i).getJSONObject("owner").getString("login"),
                                         items.getJSONObject(i).getString("description"),
                                         items.getJSONObject(i).getString("stargazers_count")
-
                                 ));
                             }
 

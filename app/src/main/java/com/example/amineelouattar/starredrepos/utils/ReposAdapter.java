@@ -1,4 +1,4 @@
-package com.example.amineelouattar.starredrepos.Utils;
+package com.example.amineelouattar.starredrepos.utils;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
