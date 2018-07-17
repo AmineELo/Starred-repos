@@ -25,14 +25,14 @@ import java.util.List;
 
 public class MainActivityPresenter implements MainPresenterInterface, Paginate.Callbacks{
 
-    MainViewInterface view;
+    private MainViewInterface view;
     private MainModelInterface mainModel;
     private int pager;
     private boolean isLoading;
     private Context context;
 
 
-    public MainActivityPresenter(MainModelInterface mainModel, Context context) {
+    MainActivityPresenter(MainModelInterface mainModel, Context context) {
         this.mainModel = mainModel;
         this.pager = 0;
         this.isLoading = false;
@@ -53,6 +53,7 @@ public class MainActivityPresenter implements MainPresenterInterface, Paginate.C
         mainModel.performRequest(setUpUrl(), pager, context, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                isLoading = false;
                 if(view != null){
                     view.updateRepos(extractReposList(response));
                 }
@@ -60,7 +61,7 @@ public class MainActivityPresenter implements MainPresenterInterface, Paginate.C
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                isLoading = false;
             }
         });
     }

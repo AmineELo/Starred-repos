@@ -33,11 +33,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements MainViewInterface{
 
     private RecyclerView reposList;
-    private List<Repos> reposDataSet;
     private int pager = 0;
     private ReposAdapter adapter;
     private boolean isLoading = false;
-    private Paginate paginate;
     private MainActivityPresenter presenter;
 
     @Override
@@ -49,16 +47,18 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         configureReposList();
 
         //create the Paginate Builder
-        paginate = Paginate.with(reposList, presenter)
+        Paginate paginate = Paginate.with(reposList, presenter)
                 .setLoadingTriggerThreshold(3)
                 .addLoadingListItem(true)
                 .setLoadingListItemCreator(null)
                 .build();
 
+        presenter.bind(this);
+
     }
 
     private void initComponents(){
-        reposDataSet = new ArrayList<>();
+        List<Repos> reposDataSet = new ArrayList<>();
         reposList = findViewById(R.id.repos_list);
         adapter = new ReposAdapter(reposDataSet, this);
         MainModelInterface mainModel = new MainActivityModel();
@@ -68,13 +68,17 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     private void configureReposList(){
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(reposList.getContext(), mLayoutManager.getOrientation());
-
         reposList.setLayoutManager(mLayoutManager);
-
         //Set the divider for the list
         reposList.addItemDecoration(dividerItemDecoration);
         //Set the Repos Adapter for the list
         reposList.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.unbind();
+        super.onDestroy();
     }
 
     @Override
