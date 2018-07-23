@@ -23,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivityPresenter implements MainPresenterInterface, Paginate.Callbacks{
 
     private MainViewInterface view;
@@ -32,19 +34,16 @@ public class MainActivityPresenter implements MainPresenterInterface, Paginate.C
     private Context context;
 
 
-    MainActivityPresenter(MainModelInterface mainModel, Context context) {
+    @Inject
+    MainActivityPresenter(MainModelInterface mainModel, MainViewInterface view) {
         this.mainModel = mainModel;
         this.pager = 0;
         this.isLoading = false;
-        this.context = context;
-    }
-
-    public void bind(MainViewInterface view){
         this.view = view;
     }
 
-    public void unbind(){
-        this.view = null;
+    public void setContext(Context context){
+        this.context = context;
     }
 
     @Override

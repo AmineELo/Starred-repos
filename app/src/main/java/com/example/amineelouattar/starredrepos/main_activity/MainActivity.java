@@ -6,9 +6,12 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.amineelouattar.starredrepos.AppEntry;
 import com.example.amineelouattar.starredrepos.R;
+import com.example.amineelouattar.starredrepos.main_activity.component.DaggerMainActivityComponent;
 import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainModelInterface;
 import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainViewInterface;
+import com.example.amineelouattar.starredrepos.main_activity.module.MainActivityModule;
 import com.example.amineelouattar.starredrepos.utils.ReposAdapter;
 import com.example.amineelouattar.starredrepos.main_activity.models.Repos;
 import com.paginate.Paginate;
@@ -16,21 +19,25 @@ import com.paginate.Paginate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivity extends AppCompatActivity implements MainViewInterface{
 
     private RecyclerView reposList;
-    private int pager = 0;
     private ReposAdapter adapter;
+    @Inject MainActivityPresenter presenter;
+    private int pager = 0;
     private boolean isLoading = false;
-    private MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initDaggerComponent();
         initComponents();
         configureReposList();
+        presenter.setContext(this);
 
         //create the Paginate Builder
         Paginate paginate = Paginate.with(reposList, presenter)
@@ -39,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 .setLoadingListItemCreator(null)
                 .build();
 
-        presenter.bind(this);
 
     }
 
@@ -48,7 +54,14 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         reposList = findViewById(R.id.repos_list);
         adapter = new ReposAdapter(reposDataSet, this);
         MainModelInterface mainModel = new MainActivityModel();
-        presenter = new MainActivityPresenter(mainModel, this);
+    }
+
+    private void initDaggerComponent(){
+        DaggerMainActivityComponent.builder()
+                .appComponent(((AppEntry)getApplicationContext()).getAppComponent())
+                .mainActivityModule(new MainActivityModule(this))
+                .build()
+                .inject(this);
     }
 
     private void configureReposList(){
@@ -59,12 +72,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         reposList.addItemDecoration(dividerItemDecoration);
         //Set the Repos Adapter for the list
         reposList.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        presenter.unbind();
-        super.onDestroy();
     }
 
     @Override
