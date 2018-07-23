@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     private RecyclerView reposList;
     private ReposAdapter adapter;
     @Inject MainActivityPresenter presenter;
-    private int pager = 0;
-    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         configureReposList();
 
         //create the Paginate Builder
-        Paginate paginate = Paginate.with(reposList, presenter)
+        Paginate.with(reposList, presenter)
                 .setLoadingTriggerThreshold(3)
                 .addLoadingListItem(true)
                 .setLoadingListItemCreator(null)
@@ -53,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         List<Repos> reposDataSet = new ArrayList<>();
         reposList = findViewById(R.id.repos_list);
         adapter = new ReposAdapter(reposDataSet, this);
-        MainModelInterface mainModel = new MainActivityModel();
     }
 
     private void initDaggerComponent(){
