@@ -1,14 +1,14 @@
-package com.example.amineelouattar.starredrepos;
+package com.example.amineelouattar.starredrepos.main_activity;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.amineelouattar.starredrepos.interfaces.MainModelInterface;
-import com.example.amineelouattar.starredrepos.interfaces.MainPresenterInterface;
-import com.example.amineelouattar.starredrepos.interfaces.MainViewInterface;
-import com.example.amineelouattar.starredrepos.models.Repos;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainModelInterface;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainPresenterInterface;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainViewInterface;
+import com.example.amineelouattar.starredrepos.main_activity.models.Repos;
 import com.example.amineelouattar.starredrepos.utils.GlobalVars;
 import com.paginate.Paginate;
 
@@ -23,28 +23,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class MainActivityPresenter implements MainPresenterInterface, Paginate.Callbacks{
 
     private MainViewInterface view;
     private MainModelInterface mainModel;
     private int pager;
     private boolean isLoading;
-    private Context context;
+    @Inject Context context;
 
 
-    MainActivityPresenter(MainModelInterface mainModel, Context context) {
+    @Inject
+    MainActivityPresenter(MainModelInterface mainModel, MainViewInterface view) {
         this.mainModel = mainModel;
         this.pager = 0;
         this.isLoading = false;
-        this.context = context;
-    }
-
-    public void bind(MainViewInterface view){
         this.view = view;
-    }
-
-    public void unbind(){
-        this.view = null;
     }
 
     @Override

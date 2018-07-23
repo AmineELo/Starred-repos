@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.amineelouattar.starredrepos.R;
-import com.example.amineelouattar.starredrepos.models.Repos;
+import com.example.amineelouattar.starredrepos.main_activity.models.Repos;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

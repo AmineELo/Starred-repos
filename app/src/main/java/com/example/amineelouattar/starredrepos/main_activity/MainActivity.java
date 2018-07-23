@@ -1,59 +1,49 @@
-package com.example.amineelouattar.starredrepos;
+package com.example.amineelouattar.starredrepos.main_activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.amineelouattar.starredrepos.interfaces.MainModelInterface;
-import com.example.amineelouattar.starredrepos.interfaces.MainViewInterface;
-import com.example.amineelouattar.starredrepos.utils.GlobalVars;
+import com.example.amineelouattar.starredrepos.AppEntry;
+import com.example.amineelouattar.starredrepos.R;
+import com.example.amineelouattar.starredrepos.main_activity.component.DaggerMainActivityComponent;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainModelInterface;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainViewInterface;
+import com.example.amineelouattar.starredrepos.main_activity.module.ContextModule;
+import com.example.amineelouattar.starredrepos.main_activity.module.MainActivityModule;
 import com.example.amineelouattar.starredrepos.utils.ReposAdapter;
-import com.example.amineelouattar.starredrepos.utils.VolleySingleton;
-import com.example.amineelouattar.starredrepos.models.Repos;
+import com.example.amineelouattar.starredrepos.main_activity.models.Repos;
 import com.paginate.Paginate;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements MainViewInterface{
 
     private RecyclerView reposList;
-    private int pager = 0;
     private ReposAdapter adapter;
-    private boolean isLoading = false;
-    private MainActivityPresenter presenter;
+    @Inject MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initDaggerComponent();
         initComponents();
         configureReposList();
 
         //create the Paginate Builder
-        Paginate paginate = Paginate.with(reposList, presenter)
+        Paginate.with(reposList, presenter)
                 .setLoadingTriggerThreshold(3)
                 .addLoadingListItem(true)
                 .setLoadingListItemCreator(null)
                 .build();
 
-        presenter.bind(this);
 
     }
 
@@ -61,8 +51,15 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         List<Repos> reposDataSet = new ArrayList<>();
         reposList = findViewById(R.id.repos_list);
         adapter = new ReposAdapter(reposDataSet, this);
-        MainModelInterface mainModel = new MainActivityModel();
-        presenter = new MainActivityPresenter(mainModel, this);
+    }
+
+    private void initDaggerComponent(){
+        DaggerMainActivityComponent.builder()
+                .appComponent(((AppEntry)getApplicationContext()).getAppComponent())
+                .mainActivityModule(new MainActivityModule(this))
+                .contextModule(new ContextModule(this))
+                .build()
+                .inject(this);
     }
 
     private void configureReposList(){
@@ -73,12 +70,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         reposList.addItemDecoration(dividerItemDecoration);
         //Set the Repos Adapter for the list
         reposList.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        presenter.unbind();
-        super.onDestroy();
     }
 
     @Override
