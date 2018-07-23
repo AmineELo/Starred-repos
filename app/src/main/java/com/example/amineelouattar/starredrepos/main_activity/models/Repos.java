@@ -1,4 +1,4 @@
-package com.example.amineelouattar.starredrepos.models;
+package com.example.amineelouattar.starredrepos.main_activity.models;
 
 /**
  * Created by amineelouattar on 12/30/17.

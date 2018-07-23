@@ -1,33 +1,19 @@
-package com.example.amineelouattar.starredrepos;
+package com.example.amineelouattar.starredrepos.main_activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.amineelouattar.starredrepos.interfaces.MainModelInterface;
-import com.example.amineelouattar.starredrepos.interfaces.MainViewInterface;
-import com.example.amineelouattar.starredrepos.utils.GlobalVars;
+import com.example.amineelouattar.starredrepos.R;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainModelInterface;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainViewInterface;
 import com.example.amineelouattar.starredrepos.utils.ReposAdapter;
-import com.example.amineelouattar.starredrepos.utils.VolleySingleton;
-import com.example.amineelouattar.starredrepos.models.Repos;
+import com.example.amineelouattar.starredrepos.main_activity.models.Repos;
 import com.paginate.Paginate;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainViewInterface{

@@ -1,18 +1,12 @@
-package com.example.amineelouattar.starredrepos;
+package com.example.amineelouattar.starredrepos.main_activity;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
-import com.example.amineelouattar.starredrepos.interfaces.MainModelInterface;
-import com.example.amineelouattar.starredrepos.utils.GlobalVars;
+import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainModelInterface;
 import com.example.amineelouattar.starredrepos.utils.VolleySingleton;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivityModel implements MainModelInterface {
 
