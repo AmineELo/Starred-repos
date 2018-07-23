@@ -3,7 +3,6 @@ package com.example.amineelouattar.starredrepos.data.component;
 import android.app.Application;
 
 import com.example.amineelouattar.starredrepos.data.module.AppModule;
-import com.example.amineelouattar.starredrepos.utils.ActivityScope;
 
 import javax.inject.Singleton;
 
