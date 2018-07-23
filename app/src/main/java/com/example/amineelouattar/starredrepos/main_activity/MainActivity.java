@@ -11,6 +11,7 @@ import com.example.amineelouattar.starredrepos.R;
 import com.example.amineelouattar.starredrepos.main_activity.component.DaggerMainActivityComponent;
 import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainModelInterface;
 import com.example.amineelouattar.starredrepos.main_activity.interfaces.MainViewInterface;
+import com.example.amineelouattar.starredrepos.main_activity.module.ContextModule;
 import com.example.amineelouattar.starredrepos.main_activity.module.MainActivityModule;
 import com.example.amineelouattar.starredrepos.utils.ReposAdapter;
 import com.example.amineelouattar.starredrepos.main_activity.models.Repos;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         initDaggerComponent();
         initComponents();
         configureReposList();
-        presenter.setContext(this);
 
         //create the Paginate Builder
         Paginate paginate = Paginate.with(reposList, presenter)
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         DaggerMainActivityComponent.builder()
                 .appComponent(((AppEntry)getApplicationContext()).getAppComponent())
                 .mainActivityModule(new MainActivityModule(this))
+                .contextModule(new ContextModule(this))
                 .build()
                 .inject(this);
     }

@@ -31,7 +31,7 @@ public class MainActivityPresenter implements MainPresenterInterface, Paginate.C
     private MainModelInterface mainModel;
     private int pager;
     private boolean isLoading;
-    private Context context;
+    @Inject Context context;
 
 
     @Inject
@@ -40,10 +40,6 @@ public class MainActivityPresenter implements MainPresenterInterface, Paginate.C
         this.pager = 0;
         this.isLoading = false;
         this.view = view;
-    }
-
-    public void setContext(Context context){
-        this.context = context;
     }
 
     @Override
